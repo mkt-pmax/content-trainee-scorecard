@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidate Scorecard — Marketing Trainee (Content)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+  :root {
+    --blue: #0000FF;
+    --orange: #FF6000;
+    --azure: #0080FF;
+    --navy: #050A30;
+    --ink: #0A0A14;
+    --white: #ffffff;
+    --off: #F5F5F8;
+    --border: #E4E4EA;
+    --muted: #8888A0;
+    --body: #2A2A3A;
+    --green: #0D6E52;
+    --green-bg: #E2F4EE;
+    --amber: #7A4A08;
+    --amber-bg: #FBF0DC;
+    --red: #922828;
+    --red-bg: #FAEBEB;
+    --track: #E4E4EA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Archivo', 'Helvetica Neue', sans-serif;
+    background: var(--off);
+    color: var(--body);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--navy);
+    padding: 36px 56px 28px;
+    border-bottom: 2.5px solid var(--orange);
+  }
+  .header-eye {
+    font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--azure); margin-bottom: 8px;
+  }
+  .header h1 { font-size: 23px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.38); }
+
+  /* ── WRAP ── */
+  .wrap { max-width: 1020px; padding: 40px 56px 100px; }
+
+  /* ── SECTION LABEL ── */
+  .sec-label {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.13em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+
+  /* ── SCORECARD GRID ── */
+  .scorecard {
+    display: grid;
+    grid-template-columns: 180px repeat(3, 1fr);
+    gap: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .sc-head {
+    padding: 14px 18px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted);
+    background: var(--off);
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .sc-head:last-child { border-right: none; }
+  .sc-head.cand { text-align: center; }
+  .sc-head .cand-name { font-size: 13px; font-weight: 600; color: var(--ink); text-transform: none; letter-spacing: 0; display: block; margin-bottom: 2px; }
+  .sc-head .cand-tag { font-size: 10px; font-weight: 500; text-transform: none; letter-spacing: 0; }
+
+  .sc-row-label {
+    padding: 14px 18px;
+    font-size: 12.5px; font-weight: 500; color: var(--ink);
+    background: var(--off);
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    display: flex; align-items: center;
+  }
+  .sc-row-label:last-child { border-bottom: none; }
+
+  .sc-cell {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .sc-cell:last-child { border-right: none; }
+
+  /* score bar */
+  .bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .bar-track { flex: 1; height: 5px; background: var(--track); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+  .fill-blue { background: var(--blue); }
+  .fill-orange { background: var(--orange); }
+  .fill-azure { background: var(--azure); }
+  .bar-num { font-size: 11.5px; font-weight: 600; color: var(--ink); min-width: 28px; text-align: right; }
+
+  /* delta badge */
+  .delta {
+    font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 4px; margin-left: 4px; vertical-align: middle;
+  }
+  .d-up { background: var(--green-bg); color: var(--green); }
+  .d-dn { background: var(--red-bg); color: var(--red); }
+  .d-eq { background: var(--border); color: var(--muted); }
+
+  .sc-note { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+
+  /* tag chips */
+  .chip { display: inline-block; font-size: 10.5px; font-weight: 500; padding: 2px 7px; border-radius: 10px; margin: 1px 2px; }
+  .chip-g { background: var(--green-bg); color: var(--green); }
+  .chip-a { background: var(--amber-bg); color: var(--amber); }
+  .chip-r { background: var(--red-bg); color: var(--red); }
+
+  /* ── DIMENSION TABLE ── */
+  .dim-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .dim-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .dim-card-head {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dim-card-head .person { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .dim-card-head .verdict-chip { font-size: 10.5px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
+  .dim-card-body { padding: 12px 16px; }
+  .dim-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; gap: 8px; }
+  .dim-row:last-child { border-bottom: none; }
+  .dim-label { color: var(--muted); flex-shrink: 0; }
+  .dim-val { font-weight: 500; color: var(--ink); text-align: right; font-size: 11.5px; }
+
+  /* ── BEFORE / AFTER ── */
+  .before-after {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .ba-head {
+    display: grid; grid-template-columns: 160px 1fr 1fr;
+    background: var(--off);
+    border-bottom: 1px solid var(--border);
+  }
+  .ba-head-cell {
+    padding: 11px 18px; font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+    border-right: 1px solid var(--border);
+  }
+  .ba-head-cell:last-child { border-right: none; }
+  .ba-row { display: grid; grid-template-columns: 160px 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .ba-row:last-child { border-bottom: none; }
+  .ba-cell { padding: 12px 18px; font-size: 12.5px; border-right: 1px solid var(--border); color: var(--body); vertical-align: top; }
+  .ba-cell:last-child { border-right: none; }
+  .ba-cell.person { font-weight: 600; color: var(--ink); background: var(--off); display: flex; align-items: flex-start; padding-top: 14px; }
+  .arrow { color: var(--azure); font-weight: 600; margin: 0 4px; }
+
+  /* ── DECISION ── */
+  .decision-banner {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .dec-label { font-size: 10.5px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+  .dec-name { font-size: 24px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .dec-sub { font-size: 12px; color: rgba(255,255,255,0.45); }
+  .dec-badge { background: var(--green-bg); color: var(--green); font-size: 12.5px; font-weight: 600; padding: 8px 20px; border-radius: 20px; white-space: nowrap; }
+
+  .reason-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .reason-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; }
+  .reason-card h4 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin-bottom: 10px; }
+  .reason-card ul { list-style: none; }
+  .reason-card ul li { font-size: 12.5px; color: var(--body); padding: 4px 0 4px 16px; position: relative; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .reason-card ul li:last-child { border-bottom: none; }
+  .reason-card ul li::before { position: absolute; left: 0; font-weight: 700; }
+  .pro li::before { content: '+'; color: var(--green); }
+  .con li::before { content: '–'; color: var(--red); }
+  .watch li::before { content: '→'; color: var(--amber); }
+
+  .footer-note {
+    background: var(--amber-bg); border-radius: 8px; padding: 14px 18px;
+    font-size: 12.5px; color: var(--amber); line-height: 1.65; margin-top: 14px;
+  }
+
+  .spacer { height: 32px; }
+
+  @media (max-width: 700px) {
+    .wrap { padding: 24px 20px 60px; }
+    .header { padding: 28px 24px 20px; }
+    .dim-grid, .reason-grid { grid-template-columns: 1fr; }
+    .scorecard, .before-after { font-size: 12px; }
+    .decision-banner { grid-template-columns: 1fr; }
+    .ba-head, .ba-row { grid-template-columns: 120px 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eye">PMAX Marketing Team · Tháng 6/2026</div>
+  <h1>Candidate Scorecard — Marketing Trainee (Content)</h1>
+  <div class="header-sub">3 ứng viên · CV screening + Group interview · Panel: TA team, chị Hao, anh Sơn (CRO)</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ══ SCORECARD ══ -->
+  <div class="sec-label">Thang điểm tổng hợp — CV + Interview</div>
+  <div class="scorecard">
+    <!-- Header row -->
+    <div class="sc-head">Tiêu chí</div>
+    <div class="sc-head cand">
+      <span class="cand-name">Thu Ho</span>
+      <span class="cand-tag" style="color:var(--muted)">RMIT Vietnam</span>
+    </div>
+    <div class="sc-head cand">
+      <span class="cand-name">Tran Nguyen Vy</span>
+      <span class="cand-tag" style="color:var(--orange)">★ Selected</span>
+    </div>
+    <div class="sc-head cand">
+      <span class="cand-name">Huong Giang</span>
+      <span class="cand-tag" style="color:var(--muted)">USSH HCM</span>
+    </div>
+
+    <!-- Row: B2B Content fit -->
+    <div class="sc-row-label">B2B Content fit</div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-blue" style="width:55%"></div></div>
+        <span class="bar-num">5.5</span>
+      </div>
+      <div class="sc-note">Background B2C hoàn toàn, nhầm scope role</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-orange" style="width:75%"></div></div>
+        <span class="bar-num">7.5</span><span class="delta d-up">↑</span>
+      </div>
+      <div class="sc-note">Hiểu B2B/B2C rõ nhất trong buổi interview</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-azure" style="width:65%"></div></div>
+        <span class="bar-num">6.5</span><span class="delta d-dn">↓</span>
+      </div>
+      <div class="sc-note">Trả lời lòng vòng, chưa rõ ràng trong interview</div>
+    </div>
+
+    <!-- Row: Content execution -->
+    <div class="sc-row-label">Content execution</div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-blue" style="width:70%"></div></div>
+        <span class="bar-num">7</span>
+      </div>
+      <div class="sc-note">Strategy thinking tốt, writing sample chưa rõ</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-orange" style="width:72%"></div></div>
+        <span class="bar-num">7.5</span>
+      </div>
+      <div class="sc-note">Case study IDOCEAN có đầu đuôi, logic rõ</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-azure" style="width:72%"></div></div>
+        <span class="bar-num">7</span>
+      </div>
+      <div class="sc-note">Có data, nhưng chủ yếu social/employer branding</div>
+    </div>
+
+    <!-- Row: AI tools -->
+    <div class="sc-row-label">AI tools</div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-blue" style="width:30%"></div></div>
+        <span class="bar-num">3</span>
+      </div>
+      <div class="sc-note">Không đề cập cụ thể trong cả CV lẫn interview</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-orange" style="width:75%"></div></div>
+        <span class="bar-num">7.5</span><span class="delta d-up">↑↑</span>
+      </div>
+      <div class="sc-note">Dùng Claude cho logic, ChatGPT cho tone — hiểu từng tool</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-azure" style="width:75%"></div></div>
+        <span class="bar-num">7.5</span>
+      </div>
+      <div class="sc-note">Liệt kê 5 tools cụ thể, có use case thực tế</div>
+    </div>
+
+    <!-- Row: Tiếng Anh -->
+    <div class="sc-row-label">Tiếng Anh</div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-blue" style="width:80%"></div></div>
+        <span class="bar-num">8</span>
+      </div>
+      <div class="sc-note">RMIT Melbourne, tự nhiên</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-orange" style="width:60%"></div></div>
+        <span class="bar-num">6</span>
+      </div>
+      <div class="sc-note">B2 Aptis — đủ dùng, cần phát triển thêm</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-azure" style="width:85%"></div></div>
+        <span class="bar-num">8.5</span>
+      </div>
+      <div class="sc-note">IELTS 7.0 — cao nhất trong 3</div>
+    </div>
+
+    <!-- Row: Tư duy chủ động -->
+    <div class="sc-row-label">Tư duy chủ động</div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-blue" style="width:80%"></div></div>
+        <span class="bar-num">8</span>
+      </div>
+      <div class="sc-note">Nhận xét cụ thể về LinkedIn PMAX khi interview</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-orange" style="width:82%"></div></div>
+        <span class="bar-num">8</span><span class="delta d-up">↑↑</span>
+      </div>
+      <div class="sc-note">Surprise lớn nhất — tư duy hơn nhiều so với CV</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-azure" style="width:62%"></div></div>
+        <span class="bar-num">6</span><span class="delta d-dn">↓</span>
+      </div>
+      <div class="sc-note">Hơi passive trong interview, describe hơn là chủ động</div>
+    </div>
+
+    <!-- Row: Career alignment -->
+    <div class="sc-row-label">Career alignment</div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-blue" style="width:30%"></div></div>
+        <span class="bar-num">3</span>
+      </div>
+      <div class="sc-note">Nói thẳng muốn làm brand/comms — content là stepping stone</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-orange" style="width:65%"></div></div>
+        <span class="bar-num">6.5</span>
+      </div>
+      <div class="sc-note">Muốn brand marketing nhưng hiểu cần master content trước</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-azure" style="width:80%"></div></div>
+        <span class="bar-num">8</span>
+      </div>
+      <div class="sc-note">Genuinely muốn đi sâu vào content</div>
+    </div>
+
+    <!-- Row: Retention -->
+    <div class="sc-row-label">Khả năng ở lại</div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-blue" style="width:30%"></div></div>
+        <span class="bar-num">Low</span>
+      </div>
+      <div class="sc-note">Rủi ro cao — 6–9 tháng</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-orange" style="width:58%"></div></div>
+        <span class="bar-num">Mid</span>
+      </div>
+      <div class="sc-note">12–18 tháng nếu có lộ trình rõ</div>
+    </div>
+    <div class="sc-cell">
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill fill-azure" style="width:78%"></div></div>
+        <span class="bar-num">High</span>
+      </div>
+      <div class="sc-note">Tốt nhất trong 3, chưa có ambition thoát content</div>
+    </div>
+  </div>
+
+  <!-- ══ BEFORE / AFTER ══ -->
+  <div style="background:var(--navy);border-radius:12px;padding:24px 28px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <div>
+      <div style="font-size:10.5px;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;color:var(--azure);margin-bottom:6px">Key Finding</div>
+      <div style="font-size:19px;font-weight:600;color:var(--white);margin-bottom:4px">Thay đổi đánh giá — Trước và sau interview</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,0.5)">Interview đảo ngược hoàn toàn ranking so với CV screening. Vy từ #3 lên #1 — Giang từ #1 xuống #3.</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-shrink:0">
+      <div style="text-align:center;background:rgba(255,255,255,0.07);border-radius:8px;padding:10px 16px">
+        <div style="font-size:22px;font-weight:700;color:#FF6000">↑↑</div>
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-top:2px">Vy</div>
+      </div>
+      <div style="text-align:center;background:rgba(255,255,255,0.07);border-radius:8px;padding:10px 16px">
+        <div style="font-size:22px;font-weight:700;color:rgba(255,255,255,0.3)">→</div>
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-top:2px">Thu Ho</div>
+      </div>
+      <div style="text-align:center;background:rgba(255,255,255,0.07);border-radius:8px;padding:10px 16px">
+        <div style="font-size:22px;font-weight:700;color:var(--red-bg)">↓↓</div>
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-top:2px">Giang</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="before-after" style="margin-bottom:32px">
+    <div class="ba-head">
+      <div class="ba-head-cell">Ứng viên</div>
+      <div class="ba-head-cell">📄 Sau CV screening</div>
+      <div class="ba-head-cell">🎤 Sau Group interview</div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-cell person">Thu Ho</div>
+      <div class="ba-cell"><strong>#2</strong> — Năng lực tổng thể cao, nhưng cần verify content writing. Portfolio xác nhận có strategy thinking thật. <span class="chip chip-a">Tiềm năng</span></div>
+      <div class="ba-cell" style="background:#fff8f8"><strong>#3</strong> <span class="arrow" style="color:var(--red)">↓</span> — Lộ rõ career goal là brand/comms. Nhầm scope role. AI tools là điểm mù. Tư duy thiếu open-mind và thiếu chủ động phân tích — đánh giá vấn đề. <span class="chip chip-r">Mismatch với role</span></div>
+    </div>
+    <div class="ba-row" style="background:#f5fbf8">
+      <div class="ba-cell person" style="background:#eaf6f1;color:var(--green);font-weight:700">Tran Nguyen Vy ★</div>
+      <div class="ba-cell" style="background:#eaf6f1"><strong>#3</strong> — CV mỏng, thiếu điểm nổi bật. Kinh nghiệm ngắn. Thiên B2C lifestyle. <span class="chip chip-a">Safe nhưng chưa nổi bật</span></div>
+      <div class="ba-cell" style="background:#eaf6f1"><strong>#1</strong> <span style="color:var(--green);font-weight:700">↑↑</span> — Surprise lớn nhất. B2B thinking rõ nhất, AI workflow cụ thể, case study có logic. Câu trả lời cuối hay nhất buổi. <span class="chip chip-g">Underrated → Selected</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-cell person">Huong Giang</div>
+      <div class="ba-cell"><strong>#1</strong> — AI tools cụ thể, IELTS 7.0, Coca-Cola experience gần B2B nhất. Consistent CV–portfolio. <span class="chip chip-g">Top pick</span></div>
+      <div class="ba-cell" style="background:#fff8f8"><strong>#3</strong> <span class="arrow" style="color:var(--red)">↓↓</span> — Trả lời lòng vòng, không đúng trọng tâm. Thiếu foundation kiến thức content và B2B Marketing. Tính logic không cao. <span class="chip chip-r">Yếu về foundation</span></div>
+    </div>
+  </div>
+
+  <!-- ══ DECISION ══ -->
+  <div class="sec-label">Quyết định tuyển dụng</div>
+
+  <div class="decision-banner">
+    <div>
+      <div class="dec-label">Ứng viên được chọn</div>
+      <div class="dec-name">Tran Nguyen Vy</div>
+      <div class="dec-sub">HELP University · Marketing Honours (GPA 3.7) · Arena Multimedia (Graphic Design) · Aptis B2</div>
+    </div>
+    <div class="dec-badge">✓ Selected</div>
+  </div>
+
+  <div class="reason-grid">
+    <div class="reason-card">
+      <h4>Lý do chọn</h4>
+      <ul class="pro">
+        <li>Câu trả lời B2B/B2C thực tế và cụ thể nhất — hiểu đúng về decision-maker, content tone, và channel.</li>
+        <li>AI workflow có chiều sâu: phân biệt được điểm mạnh từng tool và dùng đúng mục đích.</li>
+        <li>Case study IDOCEAN cho thấy tư duy problem-solving — không chỉ execute mà còn diagnose vấn đề trước.</li>
+        <li>Combo Marketing + Graphic Design giúp tự brief design, giảm phụ thuộc vào design team.</li>
+        <li>Growth mindset rõ — câu trả lời cuối buổi trưởng thành và self-aware nhất.</li>
+      </ul>
+    </div>
+    <div class="reason-card">
+      <h4>Rủi ro cần quản lý</h4>
+      <ul class="con">
+        <li>Chưa có writing sample B2B bằng tiếng Anh — cần verify sớm trong tuần đầu.</li>
+        <li>Kinh nghiệm dưới 1 năm — chưa chịu volume và deadline cao như môi trường agency.</li>
+        <li>Career goal dài hạn là brand marketing — cần lộ trình rõ để giữ retention sau 12 tháng.</li>
+      </ul>
+    </div>
+    <div class="reason-card">
+      <h4>Onboarding</h4>
+      <ul class="watch">
+        <li><strong>Ngày bắt đầu:</strong> 07/07/2026 (thứ Hai)</li>
+        <li><strong>Cùng onboard:</strong> Design Trainee — hai bạn join cùng thời điểm.</li>
+        <li><strong>Team chuẩn bị:</strong> Tài liệu onboarding theo tuần và tháng.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <strong>Lưu ý cho lần tuyển tiếp:</strong> Cả 3 ứng viên thiên digital marketing generalist hơn content writer. Nên yêu cầu writing sample bắt buộc ngay khi nộp hồ sơ và thêm signal rõ hơn trong JD về B2B long-form writing để lọc đúng profile từ vòng đầu.
+  </div>
+
+</div>
+</body>
+</html>
